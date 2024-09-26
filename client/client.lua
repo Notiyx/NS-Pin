@@ -54,7 +54,7 @@ end
 
 exports('CreatePIN', function(code, Label, cb)
     if Timers > GetGameTimer() then
-        Config.Notification('Vous avez entré un code pin incorrect 3 fois de suite veuillez attendre encore '..ConvertMStoSeconds(Timers - GetGameTimer()))
+        Config.Notification('Vous avez entré un code pin incorrect '..Config.MaxFailed..' fois de suite veuillez attendre encore '..ConvertMStoSeconds(Timers - GetGameTimer()))
         return
     end
     Timers = 0
@@ -68,7 +68,7 @@ exports('CreatePIN', function(code, Label, cb)
                 LastFailed += 1
                 if LastFailed >= Config.MaxFailed then
                     TriggerServerEvent('NS-Pin:webhook:logsDiscord', 'Echec code Pin', "Code Pin : "..code, "A entrer un code pin incorrect 3 fois de suite", 'warning')
-                    Config.Notification('Vous avez entré un code pin incorrect 3 fois de suite')
+                    Config.Notification('Vous avez entré un code pin incorrect '..Config.MaxFailed..' fois de suite')
                     Timers = GetGameTimer() + Config.MaxFailedTimer * 10 * 100
                     LastFailed = 0
                 else
